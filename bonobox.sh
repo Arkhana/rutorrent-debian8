@@ -186,7 +186,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 		libtool \
 		libwww-perl \
 		mediainfo \
-		mktorrent \
+		buildtorrent \
 		nano \
 		nginx \
 		ntp \
@@ -332,7 +332,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	cd /tmp || exit
 	"$CMDGIT" clone --progress https://github.com/exrat/rutorrent-plugins-pack
 
-	for PLUGINS in 'addzip' 'autodl-irssi' 'chat' 'filemanager' 'fileshare' 'geoip2' 'lbll-suite' 'logoff' 'nfo' 'pausewebui'  'ratiocolor' 'titlebar' 'trackerstatus'; do
+	for PLUGINS in 'addzip' 'autodl-irssi' 'chat' 'filemanager' 'fileshare' 'geoip2' 'lbll-suite' 'logoff' 'nfo' 'pausewebui' 'ratiocolor' 'titlebar' 'trackerstatus'; do
 		"$CMDCP" -R /tmp/rutorrent-plugins-pack/"$PLUGINS" "$RUPLUGINS"/
 	done
 
@@ -363,9 +363,9 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 
 	# configuration create
 	# shellcheck disable=SC2154
-	"$CMDSED" -i "s#$useExternal = false;#$useExternal = 'mktorrent';#" "$RUPLUGINS"/create/conf.php
+	"$CMDSED" -i "s#$useExternal = false;#$useExternal = 'buildtorrent';#" "$RUPLUGINS"/create/conf.php
 	# shellcheck disable=SC2154
-	"$CMDSED" -i "s#$pathToCreatetorrent = '';#$pathToCreatetorrent = '/usr/bin/mktorrent';#" "$RUPLUGINS"/create/conf.php
+	"$CMDSED" -i "s#$pathToCreatetorrent = '';#$pathToCreatetorrent = '/usr/bin/buildtorrent';#" "$RUPLUGINS"/create/conf.php
 
 	# configuration logoff
 	"$CMDSED" -i "s/scars,user1,user2/$USER/g;" "$RUPLUGINS"/logoff/conf.php
