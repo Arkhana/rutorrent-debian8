@@ -192,7 +192,7 @@ FONCIRSSI () {
 		gui-server-password = $3
 	EOF
 
-	"$CMDMKDIR" -p  "$RUCONFUSER"/"$1"/plugins/autodl-irssi
+	"$CMDMKDIR" -p "$RUCONFUSER"/"$1"/plugins/autodl-irssi
 
 	"$CMDCAT" <<- EOF > "$RUCONFUSER"/"$1"/plugins/autodl-irssi/conf.php
 		<?php
@@ -254,41 +254,41 @@ FONCGENRAPPORT () {
 
 FONCRAPPORT () {
 	# $1 = Fichier
-	if ! [[ -z "$1" ]]; then
-		if [[ -f "$1" ]]; then
-			if [[ $("$CMDWC" -l < "$1") == 0 ]]; then
+if ! [[ -z "$1" ]]; then
+if [[ -f "$1" ]]; then
+if [[ $("$CMDWC" -l < "$1") == 0 ]]; then
 				FILE="--> Empty file"
-			else
+else
 				FILE=$("$CMDCAT" "$1")
 				# domain.tld
-				if [[ "$1" = /etc/nginx/sites-enabled/* ]]; then
+if [[ "$1" = /etc/nginx/sites-enabled/* ]]; then
 					SERVER_NAME=$("$CMDGREP" server_name < "$1" | "$CMDCUT" -d';' -f1 | "$CMDSED" 's/ //' | "$CMDCUT" -c13-)
 					LETSENCRYPT=$("$CMDGREP" letsencrypt < "$1" | "$CMDHEAD" -1 | "$CMDCUT" -f 5 -d '/')
-					if ! [[ "$SERVER_NAME" = _ ]]; then
-						if [ -z "$LETSENCRYPT" ]; then
+if ! [[ "$SERVER_NAME" = _ ]]; then
+if [ -z "$LETSENCRYPT" ]; then
 							FILE=$("$CMDSED" "s/server_name[[:blank:]]${SERVER_NAME};/server_name domain.tld;/g;" "$1")
-						else
+else
 							FILE=$("$CMDSED" "s/server_name[[:blank:]]${SERVER_NAME};/server_name domain.tld;/g; s/$LETSENCRYPT/domain.tld/g;" "$1")
 						fi
 					fi
 				fi
 			fi
-		else
+else
 			FILE="--> Invalid File"
 		fi
-	else
+else
 		FILE="--> Invalid File"
 	fi
 
 	# $2 = Nom à afficher
-	if [[ -z $2 ]]; then
+if [[ -z $2 ]]; then
 		NAME="No name given"
-	else
+else
 		NAME=$2
 	fi
 
 	# $3 = Affichage "$CMDHEAD"er
-	if [[ $3 == 1 ]]; then
+if [[ $3 == 1 ]]; then
 		"$CMDCAT" <<-EOF >> "$RAPPORT"
 
 			.......................................................................................................................................
@@ -318,39 +318,39 @@ FONCTESTRTORRENT () {
 	EOF
 
 	# rTorrent lancé
-	if [[ "$("$CMDPS" uU "$USERNAME" | "$CMDGREP" -e 'rtorrent' -c)" == [0-1] ]]; then
+if [[ "$("$CMDPS" uU "$USERNAME" | "$CMDGREP" -e 'rtorrent' -c)" == [0-1] ]]; then
 		"$CMDECHO" -e "rTorrent down" >> "$RAPPORT"
-	else
+else
 		"$CMDECHO" -e "rTorrent Up" >> "$RAPPORT"
 	fi
 
 	# socket
-	if (( PORT_LISTENING >= 1 )); then
+if (( PORT_LISTENING >= 1 )); then
 		"$CMDECHO" -e "A socket listens on the port $SCGI" >> "$RAPPORT"
-		if (( RTORRENT_LISTENING >= 1 )); then
+if (( RTORRENT_LISTENING >= 1 )); then
 			"$CMDECHO" -e "It is well rTorrent that listens on the port $SCGI" >> "$RAPPORT"
-		else
+else
 			"$CMDECHO" -e "It's not rTorrent listening on the port $SCGI" >> "$RAPPORT"
 		fi
-	else
+else
 		"$CMDECHO" -e "No program listening on the port $SCGI" >> "$RAPPORT"
 	fi
 
 	# ruTorrent
-	if [[ -f "$RUTORRENT"/conf/users/"$USERNAME"/config.php ]]; then
-		if [[ $("$CMDCAT" "$RUTORRENT"/conf/users/"$USERNAME"/config.php) =~ "\$scgi_port = $SCGI" ]]; then
+if [[ -f "$RUTORRENT"/conf/users/"$USERNAME"/config.php ]]; then
+if [[ $("$CMDCAT" "$RUTORRENT"/conf/users/"$USERNAME"/config.php) =~ "\$scgi_port = $SCGI" ]]; then
 			"$CMDECHO" -e "Good SCGI port specified in the config.php file" >> "$RAPPORT"
-		else
+else
 			"$CMDECHO" -e "Wrong SCGI port specified in config.php" >> "$RAPPORT"
 		fi
-	else
+else
 		"$CMDECHO" -e "User directory found but config.php file does not exist" >> "$RAPPORT"
 	fi
 
 	# nginx
-	if [[ $("$CMDCAT" "$NGINXENABLE"/rutorrent.conf) =~ $SCGI ]]; then
+if [[ $("$CMDCAT" "$NGINXENABLE"/rutorrent.conf) =~ $SCGI ]]; then
 		"$CMDECHO" -e "The ports nginx and the one indicated match" >> "$RAPPORT"
-	else
+else
 		"$CMDECHO" -e "The nginx ports and the specified ports do not match" >> "$RAPPORT"
 	fi
 }
