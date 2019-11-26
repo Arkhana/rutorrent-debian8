@@ -25,8 +25,8 @@ apt-get update && apt-get upgrade -y
 apt-get install git lsb-release -y
 
 cd /tmp
-git clone https://github.com/Arkhana/rutorrent-debien8
-cd rutorrent-debien8
+git clone https://github.com/Arkhana/rutorrent-debian8
+cd rutorrent-debian8
 chmod a+x bonobox.sh && ./bonobox.sh
 ```
 ![caps1](https://raw.github.com/exrat/rutorrent-bonobox/master/files/caps_script01.png)
