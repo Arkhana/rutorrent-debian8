@@ -3,7 +3,7 @@
 # Script d'installation ruTorrent / Nginx
 # Auteur : Ex_Rat
 #
-# Nécessite Debian 9/10 - 64 bits & un serveur fraîchement installé
+# Nécessite Debian 8/9/10 - 64 bits & un serveur fraîchement installé
 #
 # Multi-utilisateurs
 # Inclus VsFTPd (ftp & ftps sur le port 21), Fail2ban (avec conf nginx, ftp & ssh)
@@ -19,8 +19,8 @@
 # apt-get install git-core -y
 #
 # cd /tmp
-# git clone https://github.com/exrat/rutorrent-bonobox
-# cd rutorrent-bonobox
+# git clone https://github.com/Arkhana/rutorrent-debian8
+# cd rutorrent-debian8
 # chmod a+x bonobox.sh && ./bonobox.sh
 #
 # Pour gérer vos utilisateurs ultérieurement, il vous suffit de relancer le script
@@ -330,7 +330,7 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 
 	# installation des plugins - thank Micdu70 ;)
 	cd /tmp || exit
-	"$CMDGIT" clone --progress https://github.com/exrat/rutorrent-plugins-pack
+	"$CMDGIT" clone --progress https://github.com/Arkhana/rutorrent-plugins-pack
 
 	for PLUGINS in 'addzip' 'autodl-irssi' 'chat' 'filemanager' 'fileshare' 'geoip2' 'lbll-suite' 'logoff' 'nfo' 'pausewebui' 'ratiocolor' 'titlebar' 'trackerstatus'; do
 		"$CMDCP" -R /tmp/rutorrent-plugins-pack/"$PLUGINS" "$RUPLUGINS"/
