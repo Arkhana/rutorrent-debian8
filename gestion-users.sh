@@ -167,10 +167,10 @@ if FONCYES "$VALIDE"; then
 				"$CMDECHO" ""; set "282" "284"; FONCTXT "$1" "$2"; "$CMDECHO" -n -e "${CGREEN}$TXT1${CEND} ${CYELLOW}$USER${CEND} ${CGREEN}$TXT2 ${CEND}"
 				read -r SUPPR
 
-				if FONCNO "$SUPPR"; then
-					"$CMDECHO"
-				else
-					set "286"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"; "$CMDECHO" ""
+if FONCNO "$SUPPR"; then
+		"$CMDECHO"
+else
+	set "286"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"; "$CMDECHO" ""
 
 					# variable utilisateur majuscule
 					USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
