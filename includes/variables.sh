@@ -35,8 +35,8 @@ LIBTORRENT="v0.13.8"
 RTORRENT="v0.9.8"
 
 #LIBZEN0="0.4.37"
-#LIBMEDIAINFO0="19.04"
-#MEDIAINFO="19.04"
+#LIBMEDIAINFO0="19.09"
+#MEDIAINFO="19.09"
 
 RUTORRENT="/var/www/rutorrent"
 RUPLUGINS="/var/www/rutorrent/plugins"

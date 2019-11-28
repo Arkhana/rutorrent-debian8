@@ -1,12 +1,12 @@
 #!/bin/bash
 
 FONCCONTROL () {
-	if [[ $("$CMDUNAME" -m) == x86_64 ]] && [[ "$VERSION" = 9.* ]] || [[ "$VERSION" = 10.* ]]; then
-		if [ "$("$CMDID" -u)" -ne 0 ]; then
+if [[ $("$CMDUNAME" -m) == x86_64 ]] && [[ "$VERSION" = 8.* ]] || [[ "$VERSION" = 9.* ]] || [[ "$VERSION" = 10.* ]]; then
+if [ "$("$CMDID" -u)" -ne 0 ]; then
 			"$CMDECHO" ""; set "100"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 			exit 1
-		fi
-	else
+fi
+else
 		"$CMDECHO" ""; set "130"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 		exit 1
 	fi
@@ -24,42 +24,43 @@ FONCUSER () {
 		set "214"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1 ${CEND}"
 		read -r TESTUSER
 		"$CMDGREP" -w "$TESTUSER" /etc/passwd &> /dev/null
-		if [ $? -eq 1 ]; then
-			if [[ "$TESTUSER" =~ ^[a-z0-9]{3,}$ ]]; then
+if [ $? -eq 1 ]; then
+if [[ "$TESTUSER" =~ ^[a-z0-9]{3,}$ ]]; then
 				USER="$TESTUSER"
 				# shellcheck disable=SC2104
 				break
-			else
+else
 				"$CMDECHO" ""; set "110"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
-			fi
-		else
+fi
+else
 			"$CMDECHO" ""; set "198"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 		fi
 	done
 }
 
 FONCPASS () {
-	while :; do
+while :; do
 		set "112" "114" "116"; FONCTXT "$1" "$2" "$3"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND} ${CYELLOW}$TXT2${CEND} ${CGREEN}$TXT3 ${CEND}"
 		read -r REPPWD
-		if [ "$REPPWD" = "" ]; then
+if [ "$REPPWD" = "" ]; then
 			AUTOPWD=$("$CMDTR" -dc "1-9a-nA-Np-zP-Z" < /dev/urandom | "$CMDHEAD" -c 8)
 			"$CMDECHO" ""; set "118" "120"; FONCTXT "$1" "$2"; "$CMDECHO"  -n -e "${CGREEN}$TXT1${CEND} ${CYELLOW}$AUTOPWD${CEND} ${CGREEN}$TXT2 ${CEND}"
 			read -r REPONSEPWD
-			if FONCNO "$REPONSEPWD"; then
+if FONCNO "$REPONSEPWD"; then
 				"$CMDECHO"
-			else
+else
 				USERPWD="$AUTOPWD"
 				# shellcheck disable=SC2104
 				break
-			fi
-		else
-			if [[ "$REPPWD" =~ ^[a-zA-Z0-9]{6,}$ ]]; then
+fi
+else
+
+if [[ "$REPPWD" =~ ^[a-zA-Z0-9]{6,}$ ]]; then
 				# shellcheck disable=SC2034
 				USERPWD="$REPPWD"
 				# shellcheck disable=SC2104
 				break
-			else
+else
 				"$CMDECHO" ""; set "122"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 			fi
 		fi
@@ -109,12 +110,12 @@ FONCSERVICE () {
 
 FONCFSUSER () {
 	FSUSER=$("$CMDGREP" /home/"$1" /etc/fstab | "$CMDCUT" -c 6-9)
-	if [ "$FSUSER" = "" ]; then
+if [ "$FSUSER" = "" ]; then
 		"$CMDECHO"
-	else
+else
 		"$CMDTUNE2FS" -m 0 /dev/"$FSUSER" &> /dev/null
 		"$CMDMOUNT" -o remount /home/"$1" &> /dev/null
-	fi
+fi
 }
 
 FONCHTPASSWD () {
@@ -136,9 +137,9 @@ FONCRTCONF () {
 		}
 	EOF
 
-	if [ -f "$NGINXCONFD"/log_rutorrent.conf ]; then
+if [ -f "$NGINXCONFD"/log_rutorrent.conf ]; then
 		"$CMDSED" -i "2i\  /$USERMAJ 0;" "$NGINXCONFD"/log_rutorrent.conf
-	fi
+fi
 }
 
 FONCPHPCONF () {
@@ -238,12 +239,12 @@ FONCGEN () {
 }
 
 FONCCHECKBIN () {
-	if hash "$1" 2>/dev/null; then
+if hash "$1" 2>/dev/null; then
 		"$CMDECHO"
-	else
+else
 		"$CMDAPTGET" -y install "$1"
 		"$CMDECHO" ""
-	fi
+fi
 }
 
 FONCGENRAPPORT () {
@@ -266,19 +267,19 @@ if [[ "$1" = /etc/nginx/sites-enabled/* ]]; then
 					LETSENCRYPT=$("$CMDGREP" letsencrypt < "$1" | "$CMDHEAD" -1 | "$CMDCUT" -f 5 -d '/')
 if ! [[ "$SERVER_NAME" = _ ]]; then
 if [ -z "$LETSENCRYPT" ]; then
-							FILE=$("$CMDSED" "s/server_name[[:blank:]]${SERVER_NAME};/server_name domain.tld;/g;" "$1")
+		FILE=$("$CMDSED" "s/server_name[[:blank:]]${SERVER_NAME};/server_name domain.tld;/g;" "$1")
 else
-							FILE=$("$CMDSED" "s/server_name[[:blank:]]${SERVER_NAME};/server_name domain.tld;/g; s/$LETSENCRYPT/domain.tld/g;" "$1")
-						fi
-					fi
-				fi
-			fi
+		FILE=$("$CMDSED" "s/server_name[[:blank:]]${SERVER_NAME};/server_name domain.tld;/g; s/$LETSENCRYPT/domain.tld/g;" "$1")
+	fi
+	fi
+	fi
+	fi
 else
 			FILE="--> Invalid File"
-		fi
+fi
 else
 		FILE="--> Invalid File"
-	fi
+fi
 
 	# $2 = Nom à afficher
 if [[ -z $2 ]]; then

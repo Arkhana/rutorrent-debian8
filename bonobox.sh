@@ -53,20 +53,20 @@ FONCBASHRC
 # contrôle installation
 if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# contröle wget
-	if [ ! -f "$CMDWGET" ]; then
+if [ ! -f "$CMDWGET" ]; then
 		"$CMDAPTGET" install -y wget &>/dev/null
-	fi
+fi
 	# log de l'installation
 	exec > >("$CMDTEE" "/tmp/install.log") 2>&1
 	# liste users en arguments
 	TESTARG=$("$CMDECHO" "$ARG" | "$CMDTR" -s ' ' '\n' | "$CMDGREP" :)
-	if [ ! -z "$TESTARG" ]; then
+if [ ! -z "$TESTARG" ]; then
 		"$CMDECHO" "$ARG" | "$CMDTR" -s ' ' '\n' | "$CMDGREP" : > "$ARGFILE"
-	fi
+fi
 
-	####################################
-	# lancement installation ruTorrent #
-	####################################
+####################################
+# lancement installation ruTorrent #
+####################################
 
 	# message d'accueil
 	"$CMDCLEAR"
@@ -74,37 +74,37 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# shellcheck source=/dev/null
 	. "$INCLUDES"/logo.sh
 
-	if [ ! -s "$ARGFILE" ]; then
+if [ ! -s "$ARGFILE" ]; then
 		"$CMDECHO" ""
 		FONCUSER # demande nom user
 		"$CMDECHO" ""
 		FONCPASS # demande mot de passe
-	else
+else
 		FONCARG
-	fi
+fi
 
 	PORT=5001
 
 	# installation vsftpd
-	if [ -z "$ARGFTP" ]; then
+if [ -z "$ARGFTP" ]; then
 		"$CMDECHO" ""; set "128"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 		read -r SERVFTP
-	else
-		if [ "$ARGFTP" = "ftp-off" ]; then
+else
+if [ "$ARGFTP" = "ftp-off" ]; then
 			SERVFTP="n"
-		else
+else
 			SERVFTP="y"
-		fi
-	fi
+fi
+fi
 
 	# récupération 5% root sur /home ou /home/user si présent
 	FSHOME=$("$CMDDF" -h | "$CMDGREP" /home | "$CMDCUT" -c 6-9)
-	if [ "$FSHOME" = "" ]; then
+if [ "$FSHOME" = "" ]; then
 		"$CMDECHO"
-	else
+else
 		"$CMDTUNE2FS" -m 0 /dev/"$FSHOME" &> /dev/null
 		"$CMDMOUNT" -o remount /home &> /dev/null
-	fi
+fi
 
 	FONCFSUSER "$USER"
 
@@ -129,23 +129,23 @@ if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 
 	# récupération threads & sécu -j illimité
 	THREAD=$("$CMDGREP" -c processor < /proc/cpuinfo)
-	if [ "$THREAD" = "" ]; then
+if [ "$THREAD" = "" ]; then
 		THREAD=1
-	fi
+fi
 
 	# ajout dépôts
 	# shellcheck source=/dev/null
 	. "$INCLUDES"/deb.sh
 
 	# bind9 & dhcp
-	if [ ! -d /etc/bind ]; then
+if [ ! -d /etc/bind ]; then
 		"$CMDRM" /etc/init.d/bind9 &> /dev/null
 		"$CMDAPTGET" install -y bind9
-	fi
+fi
 
-	if [ -f /etc/dhcp/dhclient.conf ]; then
+if [ -f /etc/dhcp/dhclient.conf ]; then
 		"$CMDSED" -i "s/#prepend domain-name-servers 127.0.0.1;/prepend domain-name-servers 127.0.0.1;/g;" /etc/dhcp/dhclient.conf
-	fi
+fi
 
 	"$CMDCP" -f "$FILES"/bind/named.conf.options /etc/bind/named.conf.options
 
@@ -264,7 +264,7 @@ fi
 	"$CMDECHO" ""; set "138" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
 	# configuration ntp & réglage heure fr
-	if [ "$GENLANG" = "fr" ]; then
+if [ "$GENLANG" = "fr" ]; then
 		"$CMDECHO" "Europe/Paris" > /etc/timezone
 		"$CMDCP" -f /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
@@ -499,7 +499,7 @@ fi
 	"$CMDECHO" ""; set "166" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
 	# configuration user rutorrent.conf
-	FONCRTCONF "$USERMAJ"  "$PORT" "$USER"
+	FONCRTCONF "$USERMAJ" "$PORT" "$USER"
 
 	# config.php
 	FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
@@ -533,7 +533,7 @@ fi
 	"$CMDCP" -f "$FILES"/fail2ban/nginx-badbots.conf /etc/fail2ban/filter.d/nginx-badbots.conf
 
 	"$CMDCP" -f /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-	"$CMDSED"  -i "/ssh/,+6d" /etc/fail2ban/jail.local
+	"$CMDSED" -i "/ssh/,+6d" /etc/fail2ban/jail.local
 
 	"$CMDCAT" <<- EOF >> /etc/fail2ban/jail.local
 
@@ -578,7 +578,7 @@ fi
 		"$CMDCHMOD" 600 /var/log/vsftpd.log
 		FONCSERVICE restart vsftpd
 
-		"$CMDSED"  -i "/vsftpd/,+10d" /etc/fail2ban/jail.local
+		"$CMDSED" -i "/vsftpd/,+10d" /etc/fail2ban/jail.local
 
 		"$CMDCAT" <<- EOF >> /etc/fail2ban/jail.local
 
@@ -629,19 +629,19 @@ fi
 	fi
 
 	# ajout utilisateur supplémentaire
-	while :; do
-		if [ ! -f "$ARGFILE" ]; then
+while :; do
+if [ ! -f "$ARGFILE" ]; then
 			set "190"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 			read -r REPONSE
-		else
-			if [ -s "$ARGFILE" ]; then
+else
+if [ -s "$ARGFILE" ]; then
 				REPONSE="y"
-			else
+else
 				REPONSE="n"
 			fi
 		fi
 
-		if FONCNO "$REPONSE"; then
+if FONCNO "$REPONSE"; then
 			# fin d'installation
 			"$CMDECHO" ""; set "192"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 			CLEANPASS="$("$CMDGREP" 182 "$BONOBOX"/lang/"$GENLANG".lang | "$CMDCUT" -c5- | "$CMDSED" "s/.$//")"
@@ -649,19 +649,19 @@ fi
 			"$CMDCP" -f /tmp/install.log "$RUTORRENT"/install.log
 			"$CMDPV" -f "$RUTORRENT"/install.log | "$CMDCCZE" -h > "$RUTORRENT"/install.html
 			"$CMDTRUE" > /var/log/nginx/rutorrent-error.log
-			if [ -z "$ARGREBOOT" ]; then
+if [ -z "$ARGREBOOT" ]; then
 				"$CMDECHO" ""; set "194"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 				read -r REBOOT
-			else
-				if [ "$ARGREBOOT" = "reboot-off" ]; then
+else
+if [ "$ARGREBOOT" = "reboot-off" ]; then
 					break
-				else
+else
 					"$CMDSYSTEMCTL" reboot
 					break
 				fi
 			fi
 
-			if FONCNO "$REBOOT"; then
+if FONCNO "$REBOOT"; then
 				"$CMDECHO" ""; set "196"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 				"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/install.html${CEND}"
 				"$CMDECHO" ""; set "200"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"
@@ -672,7 +672,7 @@ fi
 				break
 			fi
 
-			if FONCYES "$REBOOT"; then
+if FONCYES "$REBOOT"; then
 				"$CMDECHO" ""; set "196"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 				"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/install.html${CEND}"
 				"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
@@ -684,13 +684,13 @@ fi
 			fi
 		fi
 
-		if FONCYES "$REPONSE"; then
-			if [ ! -s "$ARGFILE" ]; then
+if FONCYES "$REPONSE"; then
+if [ ! -s "$ARGFILE" ]; then
 				"$CMDECHO" ""
 				FONCUSER # demande nom user
 				"$CMDECHO" ""
 				FONCPASS # demande mot de passe
-			else
+else
 				FONCARG
 			fi
 
