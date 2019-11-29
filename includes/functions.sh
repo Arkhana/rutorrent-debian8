@@ -26,16 +26,16 @@ FONCUSER () {
 		"$CMDGREP" -w "$TESTUSER" /etc/passwd &> /dev/null
 if [ $? -eq 1 ]; then
 if [[ "$TESTUSER" =~ ^[a-z0-9]{3,}$ ]]; then
-				USER="$TESTUSER"
+		USER="$TESTUSER"
 				# shellcheck disable=SC2104
 				break
 else
-				"$CMDECHO" ""; set "110"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
+		"$CMDECHO" ""; set "110"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 fi
 else
-			"$CMDECHO" ""; set "198"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
-		fi
-	done
+		"$CMDECHO" ""; set "198"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
+fi
+done
 }
 
 FONCPASS () {
@@ -258,9 +258,9 @@ FONCRAPPORT () {
 if ! [[ -z "$1" ]]; then
 if [[ -f "$1" ]]; then
 if [[ $("$CMDWC" -l < "$1") == 0 ]]; then
-				FILE="--> Empty file"
+		FILE="--> Empty file"
 else
-				FILE=$("$CMDCAT" "$1")
+		FILE=$("$CMDCAT" "$1")
 				# domain.tld
 if [[ "$1" = /etc/nginx/sites-enabled/* ]]; then
 					SERVER_NAME=$("$CMDGREP" server_name < "$1" | "$CMDCUT" -d';' -f1 | "$CMDSED" 's/ //' | "$CMDCUT" -c13-)
@@ -275,7 +275,7 @@ else
 	fi
 	fi
 else
-			FILE="--> Invalid File"
+		FILE="--> Invalid File"
 fi
 else
 		FILE="--> Invalid File"
@@ -329,9 +329,9 @@ else
 if (( PORT_LISTENING >= 1 )); then
 		"$CMDECHO" -e "A socket listens on the port $SCGI" >> "$RAPPORT"
 if (( RTORRENT_LISTENING >= 1 )); then
-			"$CMDECHO" -e "It is well rTorrent that listens on the port $SCGI" >> "$RAPPORT"
+		"$CMDECHO" -e "It is well rTorrent that listens on the port $SCGI" >> "$RAPPORT"
 else
-			"$CMDECHO" -e "It's not rTorrent listening on the port $SCGI" >> "$RAPPORT"
+		"$CMDECHO" -e "It's not rTorrent listening on the port $SCGI" >> "$RAPPORT"
 		fi
 else
 		"$CMDECHO" -e "No program listening on the port $SCGI" >> "$RAPPORT"
@@ -340,9 +340,9 @@ else
 	# ruTorrent
 if [[ -f "$RUTORRENT"/conf/users/"$USERNAME"/config.php ]]; then
 if [[ $("$CMDCAT" "$RUTORRENT"/conf/users/"$USERNAME"/config.php) =~ "\$scgi_port = $SCGI" ]]; then
-			"$CMDECHO" -e "Good SCGI port specified in the config.php file" >> "$RAPPORT"
+		"$CMDECHO" -e "Good SCGI port specified in the config.php file" >> "$RAPPORT"
 else
-			"$CMDECHO" -e "Wrong SCGI port specified in config.php" >> "$RAPPORT"
+		"$CMDECHO" -e "Wrong SCGI port specified in config.php" >> "$RAPPORT"
 		fi
 else
 		"$CMDECHO" -e "User directory found but config.php file does not exist" >> "$RAPPORT"

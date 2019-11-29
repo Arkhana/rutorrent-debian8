@@ -26,8 +26,14 @@ FONCDEP () {
 		# dépôt mediainfo
 		deb http://mediaarea.net/repo/deb/debian/ $1 main
 	EOF
+	
+	"$CMDCAT" <<- EOF > "$SOURCES"/dotdeb.list
+		# dépôt dotdeb
+	deb https://www.dotdeb.org/dotdeb.gpg && apt-key add dotdeb.gpg
+EOF
 
 	# clés
+	"$CMDWGET" https://www.dotdeb.org/dotdeb.gpg && apt-key add dotdeb.gpg && "$CMDAPTKEY" add dotdeb.gpg 2>/dev/null
 	"$CMDWGET" https://packages.sury.org/php/apt.gpg -O sury.gpg && "$CMDAPTKEY" add sury.gpg 2>/dev/null
 	"$CMDWGET" http://nginx.org/keys/nginx_signing.key && "$CMDAPTKEY" add nginx_signing.key 2>/dev/null
 	"$CMDWGET" http://mediaarea.net/repo/deb/debian/pubkey.gpg -O mediainfo.gpg && "$CMDAPTKEY" add mediainfo.gpg 2>/dev/null
