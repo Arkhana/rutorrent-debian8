@@ -602,9 +602,11 @@ if [ "$GENLANG" = "fr" ]; then
 	# déplacement clé 2048 bits
 	"$CMDCP" -f /tmp/dhparams.pem "$NGINXSSL"/dhparams.pem
 	"$CMDCHMOD" 600 "$NGINXSSL"/dhparams.pem
+	
 	FONCSERVICE restart nginx
+
 	# contrôle clé 2048 bits
-	if [ ! -f "$NGINXSSL"/dhparams.pem ]; then
+if [ ! -f "$NGINXSSL"/dhparams.pem ]; then
 		"$CMDKILL" -HUP "$("$CMDPGREP" -x openssl)"
 		"$CMDECHO" ""; set "174"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 		set "176"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
@@ -613,7 +615,7 @@ if [ "$GENLANG" = "fr" ]; then
 		"$CMDCHMOD" 600 dhparams.pem
 		FONCSERVICE restart nginx
 		"$CMDECHO" ""; set "178" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
-	fi
+fi
 
 	# log users
 	"$CMDECHO" "$HISTOLOG.log">> "$RUTORRENT"/"$HISTOLOG".log
