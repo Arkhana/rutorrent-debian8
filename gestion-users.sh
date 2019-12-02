@@ -84,47 +84,47 @@ if FONCYES "$VALIDE"; then
 				FONCRTCONF "$USERMAJ"  "$PORT" "$USER"
 
 				# configuration script backup .session (rétro-compatibilité)
-				if [ -f "$SCRIPT"/backup-session.sh ]; then
-					FONCBAKSESSION
-				fi
+if [ -f "$SCRIPT"/backup-session.sh ]; then
+		FONCBAKSESSION
+fi
 
-				# config.php
-				"$CMDMKDIR" "$RUCONFUSER"/"$USER"
-				FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
+		# config.php
+			"$CMDMKDIR" "$RUCONFUSER"/"$USER"
+	FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
 
 				# plugins.ini
 				"$CMDCP" -f "$FILES"/rutorrent/plugins.ini "$RUCONFUSER"/"$USER"/plugins.ini
 
 				# configuration autodl-irssi
-				if [ -f "/etc/irssi.conf" ]; then
-					FONCIRSSI "$USER" "$PORT" "$USERPWD"
-				fi
+if [ -f "/etc/irssi.conf" ]; then
+		FONCIRSSI "$USER" "$PORT" "$USERPWD"
+fi
 
 				# chroot user supplémentaire
-				"$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
+"$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
 					Match User $USER
 					ChrootDirectory /home/$USER
-				EOF
+EOF
 
-				FONCSERVICE restart ssh
+		FONCSERVICE restart ssh
 
-				# permissions
-				"$CMDCHOWN" -R "$WDATA" "$RUTORRENT"
-				"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
-				"$CMDCHOWN" root:"$USER" /home/"$USER"
-				"$CMDCHMOD" 755 /home/"$USER"
+		# permissions
+		"$CMDCHOWN" -R "$WDATA" "$RUTORRENT"
+		"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
+		"$CMDCHOWN" root:"$USER" /home/"$USER"
+		"$CMDCHMOD" 755 /home/"$USER"
 
-				# script rtorrent
-				FONCSCRIPTRT "$USER"
+		# script rtorrent
+		FONCSCRIPTRT "$USER"
 
-				# htpasswd
-				FONCHTPASSWD "$USER"
+		# htpasswd
+		FONCHTPASSWD "$USER"
 
-				# lancement user
-				FONCSERVICE start "$USER"-rtorrent
-				if [ -f "/etc/irssi.conf" ]; then
-					FONCSERVICE start "$USER"-irssi
-				fi
+		# lancement user
+		FONCSERVICE start "$USER"-rtorrent
+if [ -f "/etc/irssi.conf" ]; then
+		FONCSERVICE start "$USER"-irssi
+fi
 
 				# log users
 				"$CMDECHO" "userlog">> "$RUTORRENT"/"$HISTOLOG".log
@@ -135,9 +135,9 @@ if FONCYES "$VALIDE"; then
 				set "184"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND}"
 				set "186"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}${PASSNGINX}${CEND}"
 				set "188"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"; "$CMDECHO" ""
-			;;
+;;
 
-			2) # modification mot de passe utilisateur
+2) # modification mot de passe utilisateur
 				"$CMDECHO" ""; set "214"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1 ${CEND}"
 				read -r USER
 				"$CMDECHO" ""; FONCPASS
@@ -185,10 +185,10 @@ else
 					"$CMDPKILL" -u "$USER"
 
 					# suppression script
-					if [ -f "/etc/irssi.conf" ]; then
+if [ -f "/etc/irssi.conf" ]; then
 						"$CMDRM" /etc/init.d/"$USER"-irssi
 						"$CMDUPDATERC" "$USER"-irssi remove
-					fi
+fi
 					"$CMDRM" /etc/init.d/"$USER"-rtorrent
 					"$CMDUPDATERC" "$USER"-rtorrent remove
 
@@ -211,33 +211,33 @@ else
 					"$CMDDELUSER" "$USER" --remove-home
 					cd "$BONOBOX"
 					"$CMDECHO" ""; set "264" "288"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND} ${CBLUE}$TXT2${CEND}"
-				fi
-			;;
+fi
+;;
 
-			4) # debug
+4) # debug
 				"$CMDCHMOD" a+x "$FILES"/scripts/check-rtorrent.sh
 				"$CMDBASH" "$FILES"/scripts/check-rtorrent.sh
-			;;
+;;
 
-			5) # sortir gestion utilisateurs
+5) # sortir gestion utilisateurs
 				"$CMDECHO" ""; set "290"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 				read -r REBOOT
 
-				if FONCNO "$REBOOT"; then
-					FONCSERVICE restart nginx &> /dev/null
-					"$CMDECHO" ""; set "200"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"
-					"$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-					"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
-					exit 1
-				fi
+if FONCNO "$REBOOT"; then
+		FONCSERVICE restart nginx &> /dev/null
+		"$CMDECHO" ""; set "200"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"
+		"$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+		"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
+exit 1
+fi
 
-				if FONCYES "$REBOOT"; then
-					"$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-					"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
-					"$CMDSYSTEMCTL" reboot
-				fi
+if FONCYES "$REBOOT"; then
+		"$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+		"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
+		"$CMDSYSTEMCTL" reboot
+fi
 				break
-			;;
+;;
 
 			*) # fail
 				set "292"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"
